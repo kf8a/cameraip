@@ -11,7 +11,6 @@ import (
 )
 
 type camera struct {
-	Name     string    `json:"name"`
 	IP       string    `json:"ip"`
 	DateTime time.Time `json:"time"`
 }
