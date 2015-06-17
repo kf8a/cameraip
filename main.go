@@ -4,7 +4,6 @@ import (
 	// "fmt"
 	"fmt"
 	"github.com/gorilla/mux"
-	"log"
 	"net/http"
 	"strings"
 	"time"
