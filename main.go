@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -23,12 +24,15 @@ func status(cameras map[string]camera, w http.ResponseWriter, r *http.Request) {
 func handler(cameras map[string]camera, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	camera_id := vars["camera"]
+	match, _ := regexp.MatchString("g\\d+", camera_id)
 
-	ip := strings.Split(r.RemoteAddr, ":")[0]
+	if match {
+		ip := strings.Split(r.RemoteAddr, ":")[0]
 
-	c := camera{IP: ip, DateTime: time.Now()}
+		c := camera{IP: ip, DateTime: time.Now()}
 
-	cameras[camera_id] = c
+		cameras[camera_id] = c
+	}
 }
 
 func main() {
