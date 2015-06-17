@@ -20,10 +20,6 @@ func status(cameras map[string]camera, w http.ResponseWriter, r *http.Request) {
 	enc := json.NewEncoder(w)
 
 	enc.Encode(cameras)
-	// for k, v := range cameras {
-
-	// 	fmt.Fprintf(w, "camera %s: last ip: %s on %s\n", k, v.IP, v.DateTime)
-	// }
 }
 
 func handler(cameras map[string]camera, w http.ResponseWriter, r *http.Request) {
