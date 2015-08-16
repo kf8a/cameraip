@@ -17,8 +17,7 @@ var (
 		Help: "Number of times the stats server was pinged.",
 	})
 	process_memory = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "process_TotalMem",
-		Help: "Total Memory used",
+		Name: "process_virtual_memory_bytes",
 	})
 )
 
