@@ -49,13 +49,21 @@ func handler(cameras map[string]camera, w http.ResponseWriter, r *http.Request) 
 }
 
 func process_stats() {
-	time.Sleep(1000)
-	m := &runtime.MemStats{}
-	runtime.ReadMemStats(m)
-	process_memory.Set(float64(m.Alloc))
+	for {
+		time.Sleep(10000)
+		m := &runtime.MemStats{}
+		runtime.ReadMemStats(m)
+		process_memory.Set(float64(m.Alloc))
+	}
+}
+
+func init() {
+	prometheus.MustRegister(process_memory)
+	prometheus.MustRegister(ping_counter)
 }
 
 func main() {
+
 	go process_stats()
 
 	cameras := make(map[string]camera)
