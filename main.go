@@ -6,7 +6,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"net/http"
 	"regexp"
-	"runtime"
 	"strings"
 	"time"
 )
@@ -15,9 +14,6 @@ var (
 	ping_counter = prometheus.NewCounter(prometheus.CounterOpts{
 		Name: "camera_pings",
 		Help: "Number of times the stats server was pinged.",
-	})
-	process_memory = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "process_virtual_memory_bytes",
 	})
 )
 
@@ -35,7 +31,7 @@ func status(cameras map[string]camera, w http.ResponseWriter, r *http.Request) {
 func handler(cameras map[string]camera, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	camera_id := vars["camera"]
-	match, _ := regexp.MatchString("g\\d+", camera_id)
+	match, _ := regexp.MatchString("g\\d+SALT-4e2816a6aa799eb76d1a9ff7265d5371", camera_id)
 
 	if match {
 		ping_counter.Add(1)
@@ -44,26 +40,16 @@ func handler(cameras map[string]camera, w http.ResponseWriter, r *http.Request) 
 		c := camera{IP: ip, DateTime: time.Now()}
 
 		cameras[camera_id] = c
-	}
-}
+	} else {
 
-func process_stats() {
-	for {
-		time.Sleep(10000)
-		m := &runtime.MemStats{}
-		runtime.ReadMemStats(m)
-		process_memory.Set(float64(m.Alloc))
 	}
 }
 
 func init() {
-	prometheus.MustRegister(process_memory)
 	prometheus.MustRegister(ping_counter)
 }
 
 func main() {
-
-	go process_stats()
 
 	cameras := make(map[string]camera)
 
