@@ -34,6 +34,7 @@ func handler(cameras map[string]camera, w http.ResponseWriter, r *http.Request) 
 	match, _ := regexp.MatchString("g\\d+SALT-4e2816a6aa799eb76d1a9ff7265d5371", camera_id)
 
 	if match {
+		camera_id = strings.Replace(camera_id, "SALT-4e2816a6aa799eb76d1a9ff7265d5371", "", 1)
 		ping_counter.Add(1)
 		ip := strings.Split(r.RemoteAddr, ":")[0]
 
