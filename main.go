@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+  "net"
 )
 
 var (
@@ -36,7 +37,8 @@ func handler(cameras map[string]camera, w http.ResponseWriter, r *http.Request) 
 	if match {
 		camera_id = strings.Replace(camera_id, "SALT-4e2816a6aa799eb76d1a9ff7265d5371", "", 1)
 		ping_counter.Add(1)
-		ip := strings.Split(r.RemoteAddr, ":")[0]
+    ip, _, _ := net.SplitHostPort(r.RemoteAddr)
+		// ip := strings.Split(r.RemoteAddr, ":")[0]
 
 		c := camera{IP: ip, DateTime: time.Now()}
 
